@@ -45,11 +45,21 @@ public class Gui extends Filter{
 
     public Gui(Pipe pTrace, Pipe pCalc){
 
-        this.traceGui = new TraceGui();
-
-        postFixer = new PostFixe();
         this._dataInPipe = pTrace;
         this._dataOutPipe = pCalc;
+
+
+        this.traceGui = new TraceGui();
+
+        //  read all the previous records
+        while(!pTrace.isEmpty()){
+            this.traceGui.addDataToDisplay(
+                    this._dataInPipe.dataOut()
+            );
+        }
+
+
+        postFixer = new PostFixe();
         //Creating the Frame
         this.frame = new JFrame("Calculator");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

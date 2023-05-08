@@ -10,18 +10,17 @@ public class Trace extends Filter{
         this._dataOutPipe = pGui;
 
         //  read file and write its totality to the pipe
-        try{
-            FileReader fileReader =new FileReader("Trace.txt");
-
-            BufferedReader reader = new BufferedReader(fileReader);
+        try(
+                BufferedReader reader = new BufferedReader(new FileReader("Trace.txt"))
+        ){
 
             //  write all the previously read values to the trace
-
             String line = reader.readLine();
             while (line != null && (!line.isEmpty())) {
+
+                System.out.println("=========>" + line);
                 this._dataOutPipe.dataIn(line);
                 line = reader.readLine();
-                System.out.println(line);
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -30,13 +29,11 @@ public class Trace extends Filter{
 
     public void addLine(String tmp){
 
-        try{
-            FileWriter fileWriter =new FileWriter("Trace.txt",true);
-
-            BufferedWriter writer = new BufferedWriter(fileWriter);
-
+        try(
+                BufferedWriter writer = new BufferedWriter(new FileWriter("Trace.txt",true))
+        ){
             //  write all the previously read values to the trace
-
+            System.out.println(tmp + " in writter");
             writer.write(tmp);
             writer.write('\n');
             System.out.println("written");
@@ -48,24 +45,6 @@ public class Trace extends Filter{
     @Override
     public void run() {
         while(true){
-            try{
-                FileReader fileReader =new FileReader("Trace.txt");
-
-                BufferedReader reader = new BufferedReader(fileReader);
-                //  write all the previously read values to the trace
-
-                String line = reader.readLine();
-                if(line==null)
-                    System.out.println("ksksksksks");
-                while (line != null) {
-
-                    System.out.println("stakcccc");
-                    line = reader.readLine();
-                    System.out.println(line + "==>from file");
-                }
-            }catch (Exception e){
-                e.printStackTrace();
-            }
 
             String s = this._dataInPipe.dataOut();
             //  write it out to the file here
